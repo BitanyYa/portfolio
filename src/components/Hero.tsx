@@ -86,7 +86,7 @@ export default function Hero() {
               className="text-[15px] leading-[1.7] max-w-md mb-10 fade-up"
               style={{ color: '#475569', animationDelay: '180ms' }}
             >
-              I build full-stack projects and real-time web applications — from scalable backends to polished user interfaces.
+              I build full-stack projects and real-time web applications from scalable backends to polished user interfaces.
             </p>
 
             {/* CTAs */}
