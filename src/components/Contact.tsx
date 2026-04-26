@@ -35,7 +35,6 @@ export default function Contact() {
       <div className="max-w-[1100px] mx-auto">
         <div className="glow-divider mb-16" />
 
-        {/* Header — centered */}
         <div className="text-center mb-14">
           <p className="section-label mb-5 justify-center">Contact</p>
           <h2
@@ -49,7 +48,6 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* 3 icon link cards */}
         <div className="grid sm:grid-cols-3 gap-6 mb-10 max-w-2xl mx-auto">
           {contacts.map(c => (
             <a
@@ -59,7 +57,6 @@ export default function Contact() {
               rel={c.external ? 'noopener noreferrer' : undefined}
               className="card group flex flex-col items-center gap-4 p-6 rounded-xl text-center transition-all duration-200 hover:-translate-y-1"
             >
-              {/* Icon */}
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
                 style={{
@@ -70,8 +67,6 @@ export default function Contact() {
               >
                 {c.icon}
               </div>
-
-              {/* Label */}
               <span className="text-sm font-semibold" style={{ color: '#f8fafc' }}>
                 {c.label}
               </span>
@@ -79,7 +74,6 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* Primary CTA */}
         <div className="flex justify-center">
           <a
             href="mailto:bethanywondimagegn@gmail.com"
