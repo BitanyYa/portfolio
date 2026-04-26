@@ -105,7 +105,7 @@ export default function About() {
         </div>
 
         {/* ── Skills ── */}
-        <div>
+        <div id="skills">
           <p className="section-label mb-8">Skills &amp; Tools</p>
           <div className="space-y-6">
             {skillCategories.map(cat => (
