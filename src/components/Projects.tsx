@@ -80,88 +80,88 @@ function ProjectCard({ p }: { p: Project }) {
         el.style.boxShadow = '0 2px 20px rgba(0,0,0,0.25)'
       }}
     >
-      {/* Full-card screenshot — fades in on hover */}
+      {/* Screenshot covers the full card on hover */}
       <img
         src={p.screenshot}
         alt={p.title}
         className="absolute inset-0 w-full h-full object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-500"
       />
-      {/* Dark overlay so content stays readable over screenshot */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: 'rgba(5,5,8,0.75)' }}
+        style={{ background: 'rgba(5,5,8,0.68)' }}
       />
 
-      {/* Left — placeholder (fades out on hover) */}
+      {/* ── Left panel — always same style, no hover change ── */}
       <div
-        className="relative flex-shrink-0 flex items-center justify-center overflow-hidden transition-opacity duration-300 group-hover:opacity-0"
+        className="relative z-10 flex-shrink-0 flex items-center justify-center overflow-hidden"
         style={{
           width: '38%',
           borderRight: '1px solid rgba(255,255,255,0.06)',
           background: `radial-gradient(ellipse at center, ${p.accent}22 0%, ${p.accent}06 50%, transparent 100%)`,
         }}
       >
+        {/* Rings */}
         <div className="absolute w-32 h-32 rounded-full" style={{ border: `1px solid ${p.accent}18` }} />
         <div className="absolute w-20 h-20 rounded-full" style={{ border: `1px solid ${p.accent}28` }} />
-        <div
-          className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl select-none"
-          style={{
-            background: `${p.accent}15`,
-            border: `1px solid ${p.accent}35`,
-            boxShadow: `0 0 28px ${p.accent}20`,
-          }}
-        >
-          {p.icon}
+
+        {/* Icon + icon buttons — always visible */}
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl select-none"
+            style={{
+              background: `${p.accent}15`,
+              border: `1px solid ${p.accent}35`,
+              boxShadow: `0 0 28px ${p.accent}20`,
+            }}
+          >
+            {p.icon}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {p.liveDemo && (
+              <a
+                href={p.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 hover:scale-110"
+                style={{
+                  background: `${p.accent}18`,
+                  border: `1px solid ${p.accent}35`,
+                  color: p.accent,
+                }}
+                title="Live Demo"
+              >
+                <HiExternalLink className="w-4 h-4" />
+              </a>
+            )}
+            <a
+              href={p.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 hover:scale-110"
+              style={{
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: '#94a3b8',
+              }}
+              title="Source Code"
+            >
+              <SiGithub className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Right — content (always on top via z-10) */}
-      <div className="relative z-10 flex flex-col justify-between p-6 gap-4 flex-1">
-        <div className="space-y-3">
-          <h3 className="font-semibold text-base tracking-tight" style={{ color: '#f8fafc' }}>
-            {p.title}
-          </h3>
-          <p className="text-xs leading-[1.75]" style={{ color: '#475569' }}>
-            {p.description}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {p.tech.map(t => <TechBadge key={t} name={t} size="sm" />)}
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          {p.liveDemo && (
-            <a
-              href={p.liveDemo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-200 hover:-translate-y-px"
-              style={{
-                background: `${p.accent}18`,
-                border: `1px solid ${p.accent}38`,
-                color: p.accent,
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${p.accent}28` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${p.accent}18` }}
-            >
-              <HiExternalLink className="w-3.5 h-3.5" />
-              Live Demo
-            </a>
-          )}
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-medium transition-all duration-200 hover:text-white hover:-translate-y-px"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.09)',
-              color: '#64748b',
-            }}
-          >
-            <SiGithub className="w-3.5 h-3.5" />
-            Code
-          </a>
+      {/* ── Right — content always on top ── */}
+      <div className="relative z-10 flex flex-col justify-center p-6 gap-3 flex-1">
+        <h3 className="font-semibold text-base tracking-tight" style={{ color: '#f8fafc' }}>
+          {p.title}
+        </h3>
+        <p className="text-xs leading-[1.75]" style={{ color: '#475569' }}>
+          {p.description}
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {p.tech.map(t => <TechBadge key={t} name={t} size="sm" />)}
         </div>
       </div>
     </div>
