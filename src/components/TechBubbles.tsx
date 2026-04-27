@@ -31,8 +31,6 @@ const bubbles: Bubble[] = [
   { icon: <SiGithub />,      color: '#e2e8f0', size: 16, left: 35, delay: 13,   duration: 19, drift: -22, startY: 110 },
 ]
 
-import { useTheme } from '../context/ThemeContext'
-
 export default function TechBubbles() {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
