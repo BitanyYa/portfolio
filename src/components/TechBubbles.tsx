@@ -5,6 +5,7 @@ import {
 } from 'react-icons/si'
 import { useTheme } from '../context/ThemeContext'
 
+// Tech bubbles floating animation component
 interface Bubble {
   icon: React.ReactNode
   color: string
