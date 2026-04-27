@@ -1,5 +1,6 @@
 import { SiGithub } from 'react-icons/si'
 import { HiArrowRight } from 'react-icons/hi'
+import { useTheme } from '../context/ThemeContext'
 
 const codeLines = [
   { ln: '1',  tokens: [{ t: 'keyword', v: 'const' }, { t: 'text', v: ' ' }, { t: 'var', v: 'developer' }, { t: 'text', v: ' = ' }, { t: 'bracket', v: '{' }] },
@@ -11,17 +12,19 @@ const codeLines = [
   { ln: '7',  tokens: [{ t: 'bracket', v: '}' }] },
 ]
 
-const colorMap: Record<string, string> = {
-  keyword: '#c084fc',
-  var:     '#93c5fd',
-  string:  '#86efac',
-  bool:    '#f97316',
-  key:     '#f8fafc',
-  bracket: '#94a3b8',
-  text:    '#94a3b8',
-}
-
 export default function Hero() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+
+  const colorMap: Record<string, string> = {
+    keyword: '#c084fc',
+    var:     '#93c5fd',
+    string:  '#86efac',
+    bool:    '#f97316',
+    key:     isDark ? '#f8fafc' : '#1e293b',
+    bracket: isDark ? '#94a3b8' : '#64748b',
+    text:    isDark ? '#94a3b8' : '#64748b',
+  }
   return (
     <section
       id="hero"
@@ -66,8 +69,8 @@ export default function Hero() {
 
             {/* Name */}
             <h1
-              className="font-bold tracking-tight leading-[1.06] text-white mb-4 fade-up"
-              style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', animationDelay: '60ms' }}
+              className="font-bold tracking-tight leading-[1.06] mb-4 fade-up"
+              style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', color: 'var(--text-primary)', animationDelay: '60ms' }}
             >
               Bitanya{' '}
               <span className="gradient-text">Wondimagegn</span>
@@ -76,7 +79,7 @@ export default function Hero() {
             {/* Role */}
             <p
               className="text-lg font-medium mb-4 fade-up"
-              style={{ color: '#94a3b8', animationDelay: '120ms' }}
+              style={{ color: 'var(--text-secondary)', animationDelay: '120ms' }}
             >
               Full-Stack Developer
             </p>
@@ -84,7 +87,7 @@ export default function Hero() {
             {/* Tagline */}
             <p
               className="text-[15px] leading-[1.7] max-w-md mb-10 fade-up"
-              style={{ color: '#475569', animationDelay: '180ms' }}
+              style={{ color: 'var(--text-muted)', animationDelay: '180ms' }}
             >
               I build full-stack projects and real-time web applications from scalable backends to polished user interfaces.
             </p>
@@ -110,10 +113,11 @@ export default function Hero() {
                 href="https://github.com/BitanyYa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white transition-all duration-200 hover:-translate-y-px"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:-translate-y-px"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 <SiGithub className="w-4 h-4" />
@@ -130,15 +134,15 @@ export default function Hero() {
             <div
               className="rounded-xl overflow-hidden"
               style={{
-                background: '#0d0d14',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: isDark ? '#0d0d14' : '#1e1e2e',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.12)'}`,
                 boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
               }}
             >
               {/* Window chrome */}
               <div
                 className="flex items-center gap-2 px-4 py-3"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#0a0a10' }}
+                style={{ borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)'}`, background: isDark ? '#0a0a10' : '#16162a' }}
               >
                 <span className="w-3 h-3 rounded-full" style={{ background: '#ff5f57' }} />
                 <span className="w-3 h-3 rounded-full" style={{ background: '#febc2e' }} />
@@ -150,7 +154,7 @@ export default function Hero() {
               <div className="px-5 py-5 font-mono text-[13px] leading-[1.8]">
                 {codeLines.map(line => (
                   <div key={line.ln} className="flex gap-4">
-                    <span className="select-none w-4 text-right flex-shrink-0" style={{ color: '#334155' }}>
+                    <span className="select-none w-4 text-right flex-shrink-0" style={{ color: isDark ? '#334155' : '#4a5568' }}>
                       {line.ln}
                     </span>
                     <span>
@@ -174,8 +178,8 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none fade-up"
         style={{ animationDelay: '480ms' }}
       >
-        <span className="text-[9px] tracking-[0.3em] uppercase" style={{ color: '#334155' }}>Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-slate-700/50 to-transparent" />
+        <span className="text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--text-muted)' }}>Scroll</span>
+        <div className="w-px h-8 bg-gradient-to-b from-slate-500/50 to-transparent" />
       </div>
     </section>
   )

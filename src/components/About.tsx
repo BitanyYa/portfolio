@@ -32,14 +32,14 @@ export default function About() {
             <div className="md:col-span-3 space-y-5">
               <h2
                 className="font-semibold leading-snug tracking-tight"
-                style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', color: '#f8fafc' }}
+                style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', color: 'var(--text-primary)' }}
               >
                 CS graduate building<br />full-stack web applications
               </h2>
-              <p className="text-[15px] leading-[1.7]" style={{ color: '#94a3b8' }}>
+              <p className="text-[15px] leading-[1.7]" style={{ color: 'var(--text-secondary)' }}>
                 I'm a Computer Science graduate with hands-on experience building Web, Mobile, and Full-Stack applications. Skilled in creating responsive interfaces, implementing core features, and working with databases.
               </p>
-              <p className="text-[14px] leading-[1.7]" style={{ color: '#475569' }}>
+              <p className="text-[14px] leading-[1.7]" style={{ color: 'var(--text-muted)' }}>
                 Interested in Frontend and Full-Stack roles where I can contribute to real projects and grow as a developer.
               </p>
             </div>
@@ -54,7 +54,7 @@ export default function About() {
                   <span className="text-2xl font-bold" style={{ color: '#a78bfa' }}>
                     {s.value}
                   </span>
-                  <span className="text-sm" style={{ color: '#475569' }}>{s.label}</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{s.label}</span>
                 </div>
               ))}
             </div>
@@ -79,8 +79,8 @@ export default function About() {
                 >
                   Experience
                 </p>
-                <p className="font-semibold text-sm" style={{ color: '#f8fafc' }}>{experience.role}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#475569' }}>{experience.org}</p>
+                <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{experience.role}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{experience.org}</p>
               </div>
               <span
                 className="flex-shrink-0 text-[11px] font-medium px-3 py-1 rounded-full"
@@ -95,7 +95,7 @@ export default function About() {
             </div>
             <ul className="space-y-2.5">
               {experience.points.map((p, i) => (
-                <li key={i} className="flex gap-3 text-sm leading-[1.7]" style={{ color: '#475569' }}>
+                <li key={i} className="flex gap-3 text-sm leading-[1.7]" style={{ color: 'var(--text-muted)' }}>
                   <span className="mt-2.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: 'rgba(124,58,237,0.5)' }} />
                   {p}
                 </li>
@@ -112,7 +112,7 @@ export default function About() {
               <div key={cat.label}>
                 <p
                   className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-3"
-                  style={{ color: '#334155' }}
+                  style={{ color: 'var(--text-muted)' }}
                 >
                   {cat.label}
                 </p>

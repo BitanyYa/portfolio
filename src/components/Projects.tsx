@@ -64,20 +64,20 @@ function ProjectCard({ p }: { p: Project }) {
     <div
       className="group relative flex rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
       style={{
-        background: 'rgba(255,255,255,0.025)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        boxShadow: '0 2px 20px rgba(0,0,0,0.25)',
+        background: 'var(--bg-card)',
+        border: '2px solid var(--border)',
+        boxShadow: '0 2px 20px rgba(0,0,0,0.15)',
         minHeight: '180px',
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement
-        el.style.borderColor = `${p.accent}45`
-        el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px ${p.accent}18`
+        el.style.borderColor = `${p.accent}65`
+        el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.2), 0 0 0 1px ${p.accent}30`
       }}
       onMouseLeave={e => {
         const el = e.currentTarget as HTMLElement
-        el.style.borderColor = 'rgba(255,255,255,0.07)'
-        el.style.boxShadow = '0 2px 20px rgba(0,0,0,0.25)'
+        el.style.borderColor = 'var(--border)'
+        el.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)'
       }}
     >
       {/* Screenshot covers the full card on hover */}
@@ -96,7 +96,7 @@ function ProjectCard({ p }: { p: Project }) {
         className="relative z-10 flex-shrink-0 flex items-center justify-center overflow-hidden"
         style={{
           width: '38%',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
+          borderRight: '1px solid var(--border)',
           background: `radial-gradient(ellipse at center, ${p.accent}22 0%, ${p.accent}06 50%, transparent 100%)`,
         }}
       >
@@ -140,9 +140,9 @@ function ProjectCard({ p }: { p: Project }) {
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 hover:scale-110"
               style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: '#94a3b8',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-secondary)',
               }}
               title="Source Code"
             >
@@ -154,10 +154,10 @@ function ProjectCard({ p }: { p: Project }) {
 
       {/* ── Right — content always on top ── */}
       <div className="relative z-10 flex flex-col justify-center p-6 gap-3 flex-1">
-        <h3 className="font-semibold text-base tracking-tight" style={{ color: '#f8fafc' }}>
+        <h3 className="font-semibold text-base tracking-tight" style={{ color: 'var(--text-primary)' }}>
           {p.title}
         </h3>
-        <p className="text-xs leading-[1.75]" style={{ color: '#475569' }}>
+        <p className="text-xs leading-[1.75]" style={{ color: 'var(--text-muted)' }}>
           {p.description}
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -178,7 +178,7 @@ export default function Projects() {
           <p className="section-label mb-4">Projects</p>
           <h2
             className="font-semibold tracking-tight"
-            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', color: '#f8fafc' }}
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', color: 'var(--text-primary)' }}
           >
             Things I've built
           </h2>

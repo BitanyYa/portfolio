@@ -15,8 +15,8 @@ const contacts = [
     label: 'GitHub',
     href: 'https://github.com/BitanyYa',
     icon: <SiGithub className="w-5 h-5" />,
-    accent: '#e2e8f0',
-    accentAlpha: 'rgba(226,232,240,',
+    accent: '#64748b',
+    accentAlpha: 'rgba(100,116,139,',
     external: true,
   },
   {
@@ -39,11 +39,11 @@ export default function Contact() {
           <p className="section-label mb-5 justify-center">Contact</p>
           <h2
             className="font-semibold tracking-tight mb-4"
-            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: '#f8fafc' }}
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: 'var(--text-primary)' }}
           >
             Let's work together
           </h2>
-          <p className="text-[15px] leading-[1.7] max-w-md mx-auto" style={{ color: '#475569' }}>
+          <p className="text-[15px] leading-[1.7] max-w-md mx-auto" style={{ color: 'var(--text-muted)' }}>
             Open to full-time roles, freelance projects, and interesting collaborations. I'll get back to you promptly.
           </p>
         </div>
@@ -55,7 +55,19 @@ export default function Contact() {
               href={c.href}
               target={c.external ? '_blank' : undefined}
               rel={c.external ? 'noopener noreferrer' : undefined}
-              className="card group flex flex-col items-center gap-4 p-6 rounded-xl text-center transition-all duration-200 hover:-translate-y-1"
+              className="group flex flex-col items-center gap-4 p-6 rounded-xl text-center transition-all duration-200 hover:-translate-y-1"
+              style={{
+                background: 'var(--bg-card)',
+                border: '2px solid var(--border)',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = `${c.accentAlpha}0.5)`
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'var(--border)'
+              }}
             >
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
@@ -67,7 +79,7 @@ export default function Contact() {
               >
                 {c.icon}
               </div>
-              <span className="text-sm font-semibold" style={{ color: '#f8fafc' }}>
+              <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
                 {c.label}
               </span>
             </a>

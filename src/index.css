@@ -1,13 +1,38 @@
 @import "tailwindcss";
 
+/* ── CSS variables ── */
+:root {
+  --bg: #050508;
+  --bg-card: rgba(255,255,255,0.025);
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --accent: #7c3aed;
+  --accent-light: #a78bfa;
+}
+
+html.light {
+  --bg: #d4d8e1;
+  --bg-card: rgba(0,0,0,0.06);
+  --border: rgba(0,0,0,0.14);
+  --border-hover: rgba(0,0,0,0.28);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --accent: #7c3aed;
+  --accent-light: #6d28d9;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     font-family: 'Inter', system-ui, sans-serif;
   }
   body {
-    background: #050508;
-    color: #94a3b8;
+    background: var(--bg);
+    color: var(--text-secondary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -45,19 +70,19 @@
 
   /* Cards */
   .card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
   .card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--border-hover);
     transform: translateY(-2px);
   }
 
   /* Divider */
   .glow-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.25), transparent);
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4), transparent);
   }
 
   /* Animations */
@@ -68,7 +93,7 @@
   /* Nav link underline hover */
   .nav-link {
     position: relative;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-size: 14px;
     transition: color 0.2s ease;
   }
@@ -83,13 +108,20 @@
     transition: width 0.2s ease;
   }
   .nav-link:hover {
-    color: #f8fafc;
+    color: var(--text-primary);
   }
   .nav-link:hover::after {
     width: 100%;
   }
 
-  /* Code block syntax colors */
+  /* Tech pills — increase contrast in light mode */
+  html.light .tech-pill {
+    filter: brightness(0.65) saturate(1.4);
+  }
+  html.light .tech-pill-bg {
+    background: rgba(0,0,0,0.05) !important;
+    border-color: rgba(0,0,0,0.12) !important;
+  }
   .code-keyword  { color: #c084fc; }
   .code-var      { color: #93c5fd; }
   .code-string   { color: #86efac; }
@@ -112,6 +144,6 @@
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #050508; }
+::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(124, 58, 237, 0.5); }

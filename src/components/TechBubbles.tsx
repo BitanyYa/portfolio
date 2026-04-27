@@ -3,6 +3,7 @@ import {
   SiPostgresql, SiMongodb, SiNextdotjs, SiGit,
   SiExpress, SiTailwindcss, SiFigma, SiGithub,
 } from 'react-icons/si'
+import { useTheme } from '../context/ThemeContext'
 
 interface Bubble {
   icon: React.ReactNode
@@ -30,9 +31,14 @@ const bubbles: Bubble[] = [
   { icon: <SiGithub />,      color: '#e2e8f0', size: 16, left: 35, delay: 13,   duration: 19, drift: -22, startY: 110 },
 ]
 
+import { useTheme } from '../context/ThemeContext'
+
 export default function TechBubbles() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 1, opacity: 0.18 }}>
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 1, opacity: isDark ? 0.18 : 0.35 }}>
       <style>{`
         @keyframes floatUp {
           0%   { transform: translateY(0)      translateX(0)           opacity: 0; }
@@ -54,12 +60,12 @@ export default function TechBubbles() {
             '--drift': `${b.drift}px`,
             animation: `floatUp ${b.duration}s ease-in-out ${b.delay}s infinite`,
             opacity: 0,
-            background: `${b.color}12`,
-            border: `1px solid ${b.color}25`,
+            background: isDark ? `${b.color}12` : `${b.color}20`,
+            border: isDark ? `1px solid ${b.color}25` : `1px solid ${b.color}40`,
             backdropFilter: 'blur(2px)',
             fontSize: b.size,
             color: b.color,
-            filter: `drop-shadow(0 0 4px ${b.color}30)`,
+            filter: isDark ? `drop-shadow(0 0 4px ${b.color}30)` : `drop-shadow(0 0 6px ${b.color}40)`,
           } as React.CSSProperties}
         >
           {b.icon}

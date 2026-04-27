@@ -4,6 +4,7 @@ import {
   SiHtml5, SiCss, SiJavascript, SiMysql, SiGit, SiPostman, SiFigma,
 } from 'react-icons/si'
 import { TbApi } from 'react-icons/tb'
+import { useTheme } from '../context/ThemeContext'
 
 export interface TechDef {
   name: string
@@ -19,9 +20,9 @@ export const techMap: Record<string, TechDef> = {
   JavaScript:  { name: 'JavaScript',  icon: <SiJavascript />,  color: '#fde047', bg: 'rgba(253,224,71,0.08)',  border: 'rgba(253,224,71,0.2)'  },
   TypeScript:  { name: 'TypeScript',  icon: <SiTypescript />,  color: '#93c5fd', bg: 'rgba(147,197,253,0.08)', border: 'rgba(147,197,253,0.2)' },
   React:       { name: 'React',       icon: <SiReact />,       color: '#67e8f9', bg: 'rgba(103,232,249,0.08)', border: 'rgba(103,232,249,0.2)' },
-  'Next.js':   { name: 'Next.js',     icon: <SiNextdotjs />,   color: '#f3f4f6', bg: 'rgba(243,244,246,0.06)', border: 'rgba(243,244,246,0.15)'},
+  'Next.js':   { name: 'Next.js',     icon: <SiNextdotjs />,   color: '#64748b', bg: 'rgba(100,116,139,0.08)', border: 'rgba(100,116,139,0.2)' },
   'Node.js':   { name: 'Node.js',     icon: <SiNodedotjs />,   color: '#86efac', bg: 'rgba(134,239,172,0.08)', border: 'rgba(134,239,172,0.2)' },
-  Express:     { name: 'Express',     icon: <SiExpress />,     color: '#d1d5db', bg: 'rgba(209,213,219,0.06)', border: 'rgba(209,213,219,0.15)'},
+  Express:     { name: 'Express',     icon: <SiExpress />,     color: '#94a3b8', bg: 'rgba(148,163,184,0.08)', border: 'rgba(148,163,184,0.2)' },
   Laravel:     { name: 'Laravel',     icon: <SiLaravel />,     color: '#fca5a5', bg: 'rgba(252,165,165,0.08)', border: 'rgba(252,165,165,0.2)' },
   'REST APIs': { name: 'REST APIs',   icon: <TbApi />,         color: '#f0abfc', bg: 'rgba(240,171,252,0.08)', border: 'rgba(240,171,252,0.2)' },
   WebRTC:      { name: 'WebRTC',      icon: <SiWebrtc />,      color: '#fdba74', bg: 'rgba(253,186,116,0.08)', border: 'rgba(253,186,116,0.2)' },
@@ -48,6 +49,8 @@ interface TechBadgeProps {
 }
 
 export function TechBadge({ name, size = 'sm' }: TechBadgeProps) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const tech = techMap[name]
   if (!tech) {
     return (
@@ -61,10 +64,19 @@ export function TechBadge({ name, size = 'sm' }: TechBadgeProps) {
     : 'px-3 py-1.5 text-sm gap-2'
   const iconCls = size === 'sm' ? 'text-[12px]' : 'text-[14px]'
 
+  // Enhanced visibility for light mode
+  const bgOpacity = isDark ? tech.bg : tech.bg.replace('0.08', '0.18')
+  const borderOpacity = isDark ? tech.border : tech.border.replace('0.2', '0.4')
+
   return (
     <span
       className={`inline-flex items-center font-medium rounded-full border transition-all duration-200 ${cls}`}
-      style={{ color: tech.color, background: tech.bg, borderColor: tech.border }}
+      style={{ 
+        color: tech.color, 
+        background: bgOpacity, 
+        borderColor: borderOpacity,
+        filter: isDark ? 'none' : 'brightness(0.85) saturate(1.3)'
+      }}
     >
       <span className={iconCls}>{tech.icon}</span>
       {name}
@@ -74,13 +86,24 @@ export function TechBadge({ name, size = 'sm' }: TechBadgeProps) {
 
 /* ── SkillPill — horizontal row pill ── */
 export function SkillPill({ name }: { name: string }) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const tech = techMap[name]
   if (!tech) return null
+
+  // Enhanced visibility for light mode
+  const bgOpacity = isDark ? tech.bg : tech.bg.replace('0.08', '0.18')
+  const borderOpacity = isDark ? tech.border : tech.border.replace('0.2', '0.4')
 
   return (
     <span
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 hover:-translate-y-px cursor-default"
-      style={{ color: tech.color, background: tech.bg, borderColor: tech.border }}
+      style={{ 
+        color: tech.color, 
+        background: bgOpacity, 
+        borderColor: borderOpacity,
+        filter: isDark ? 'none' : 'brightness(0.85) saturate(1.3)'
+      }}
     >
       <span className="text-[13px] leading-none">{tech.icon}</span>
       {name}
