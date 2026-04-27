@@ -62,12 +62,12 @@ const projects: Project[] = [
 function ProjectCard({ p }: { p: Project }) {
   return (
     <div
-      className="group relative flex rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+      className="group relative flex rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
       style={{
         background: 'var(--bg-card)',
         border: '2px solid var(--border)',
         boxShadow: '0 2px 20px rgba(0,0,0,0.15)',
-        minHeight: '180px',
+        height: '240px',
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement
@@ -80,20 +80,57 @@ function ProjectCard({ p }: { p: Project }) {
         el.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)'
       }}
     >
-      {/* Screenshot covers the full card on hover */}
-      <img
-        src={p.screenshot}
-        alt={p.title}
-        className="absolute inset-0 w-full h-full object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: 'rgba(5,5,8,0.68)' }}
-      />
+      {/* Screenshot - fills entire card on hover */}
+      <div 
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500"
+        style={{ background: 'var(--bg)' }}
+      >
+        <img
+          src={p.screenshot}
+          alt={p.title}
+          className="w-full h-full object-cover object-center scale-95 group-hover:scale-100 transition-transform duration-500"
+        />
+        
+        {/* Overlay with links - appears on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-center p-6 gap-3" style={{ zIndex: 20 }}>
+          {p.liveDemo && (
+            <a
+              href={p.liveDemo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+              style={{
+                background: `${p.accent}25`,
+                border: `1px solid ${p.accent}50`,
+                color: '#fff',
+                backdropFilter: 'blur(8px)',
+              }}
+              title="Live Demo"
+            >
+              <HiExternalLink className="w-5 h-5" />
+            </a>
+          )}
+          <a
+            href={p.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+            style={{
+              background: 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              color: '#fff',
+              backdropFilter: 'blur(8px)',
+            }}
+            title="GitHub"
+          >
+            <SiGithub className="w-5 h-5" />
+          </a>
+        </div>
+      </div>
 
-      {/* ── Left panel — always same style, no hover change ── */}
+      {/* Left panel - icon (hidden on hover) */}
       <div
-        className="relative z-10 flex-shrink-0 flex items-center justify-center overflow-hidden"
+        className="relative z-10 flex-shrink-0 flex items-center justify-center overflow-hidden transition-opacity duration-300 group-hover:opacity-0"
         style={{
           width: '38%',
           borderRight: '1px solid var(--border)',
@@ -104,7 +141,7 @@ function ProjectCard({ p }: { p: Project }) {
         <div className="absolute w-32 h-32 rounded-full" style={{ border: `1px solid ${p.accent}18` }} />
         <div className="absolute w-20 h-20 rounded-full" style={{ border: `1px solid ${p.accent}28` }} />
 
-        {/* Icon + icon buttons — always visible */}
+        {/* Icon */}
         <div className="relative z-10 flex flex-col items-center gap-3">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl select-none"
@@ -152,8 +189,8 @@ function ProjectCard({ p }: { p: Project }) {
         </div>
       </div>
 
-      {/* ── Right — content always on top ── */}
-      <div className="relative z-10 flex flex-col justify-center p-6 gap-3 flex-1">
+      {/* Right panel - content (hidden on hover) */}
+      <div className="relative z-10 flex flex-col justify-center p-6 gap-3 flex-1 transition-opacity duration-300 group-hover:opacity-0">
         <h3 className="font-semibold text-base tracking-tight" style={{ color: 'var(--text-primary)' }}>
           {p.title}
         </h3>

@@ -132,17 +132,27 @@ export default function Hero() {
             style={{ animationDelay: '300ms' }}
           >
             <div
-              className="rounded-xl overflow-hidden"
+              className="rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 cursor-default"
               style={{
                 background: isDark ? '#0d0d14' : '#1e1e2e',
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.12)'}`,
+                border: `2px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.12)'}`,
                 boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(124,58,237,0.5)'
+                el.style.boxShadow = '0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,58,237,0.3)'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.12)'
+                el.style.boxShadow = '0 24px 64px rgba(0,0,0,0.5)'
               }}
             >
               {/* Window chrome */}
               <div
                 className="flex items-center gap-2 px-4 py-3"
-                style={{ borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)'}`, background: isDark ? '#0a0a10' : '#16162a' }}
+                style={{ borderBottom: `2px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)'}`, background: isDark ? '#0a0a10' : '#16162a' }}
               >
                 <span className="w-3 h-3 rounded-full" style={{ background: '#ff5f57' }} />
                 <span className="w-3 h-3 rounded-full" style={{ background: '#febc2e' }} />
