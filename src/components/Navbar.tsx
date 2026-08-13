@@ -1,165 +1,215 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { HiSun, HiMoon } from 'react-icons/hi'
 import { useTheme } from '../context/ThemeContext'
 
-const links = [
-  { label: 'About',    href: '#about' },
-  { label: 'Skills',   href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact',  href: '#contact' },
+const SECTIONS = [
+  { id: 'landing',    label: 'init',       mono: '00' },
+  { id: 'projects',   label: 'work',       mono: '01' },
+  { id: 'experience', label: 'experience', mono: '02' },
+  { id: 'lab',        label: 'lab',        mono: '03' },
+  { id: 'contact',    label: 'contact',    mono: '04' },
 ]
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+interface Props {
+  activeSection: string
+  onOpenCommandBar: () => void
+}
+
+export default function Navbar({ activeSection, onOpenCommandBar }: Props) {
+  const [scrolled, setScrolled]     = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const { theme, toggleTheme }      = useTheme()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const handler = () => setScrolled(window.scrollY > 32)
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  const scrolledBg = theme === 'light'
-    ? 'rgba(212,216,225,0.92)'
-    : 'rgba(5,5,8,0.88)'
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setMobileOpen(false)
+  }
 
-  const scrolledBorder = theme === 'light'
-    ? '1px solid rgba(0,0,0,0.12)'
-    : '1px solid rgba(255,255,255,0.07)'
+  const activeMono  = SECTIONS.find(s => s.id === activeSection)?.mono  ?? '00'
+  const activeLabel = SECTIONS.find(s => s.id === activeSection)?.label ?? 'init'
 
   return (
-    <header
-      className="fixed top-0 inset-x-0 z-50 transition-all duration-300"
-      style={scrolled ? {
-        background: scrolledBg,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: scrolledBorder,
-      } : {}}
-    >
-      <nav className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <a
-          href="#hero"
-          className="font-bold text-base tracking-tight transition-colors duration-200"
-          style={{ color: 'var(--text-primary)' }}
-        >
-          BW<span style={{ color: '#7c3aed' }}>.</span>
-        </a>
-
-        {/* Desktop — center links */}
-        <ul className="hidden md:flex items-center gap-8">
-          {links.map(l => (
-            <li key={l.href}>
-              <a href={l.href} className="nav-link">{l.label}</a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Desktop — theme toggle + resume button */}
-        <div className="hidden md:flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-px"
-            style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              color: 'var(--text-secondary)',
-            }}
-          >
-            {theme === 'dark'
-              ? <HiSun className="w-4 h-4" />
-              : <HiMoon className="w-4 h-4" />
-            }
-          </button>
-
-          <a
-            href="/resume.pdf"
-            download="Bitanya_Wondimagegn_Resume.pdf"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-px"
-            style={{
-              background: theme === 'dark' ? 'rgba(124,58,237,0.15)' : 'rgba(124,58,237,0.12)',
-              border: theme === 'dark' ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(124,58,237,0.5)',
-              color: theme === 'dark' ? '#c4b5fd' : '#7c3aed',
-            }}
-          >
-            Resume
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M6 1v7M3 5l3 3 3-3M2 10h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5"
-          onClick={() => setOpen(!open)}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-        >
-          <span className={`w-5 h-px bg-slate-400 transition-all duration-200 origin-center ${open ? 'rotate-45 translate-y-[3px]' : ''}`} />
-          <span className={`w-5 h-px bg-slate-400 transition-all duration-200 ${open ? 'opacity-0' : ''}`} />
-          <span className={`w-5 h-px bg-slate-400 transition-all duration-200 origin-center ${open ? '-rotate-45 -translate-y-[3px]' : ''}`} />
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-72' : 'max-h-0'}`}
-        style={{
-          background: theme === 'light' ? 'rgba(212,216,225,0.97)' : 'rgba(5,5,8,0.97)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: open ? '1px solid var(--border)' : 'none',
-        }}
+    <>
+      <header
+        className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
+        style={scrolled ? {
+          background: theme === 'dark'
+            ? 'rgba(19,17,28,0.88)'
+            : 'rgba(245,243,255,0.9)',
+          backdropFilter: 'blur(24px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+          borderBottom: '1px solid rgba(139,92,246,0.14)',
+          boxShadow: '0 4px 32px rgba(0,0,0,0.3)',
+        } : {}}
       >
-        <ul className="flex flex-col px-6 py-4 gap-1">
-          {links.map(l => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="block px-3 py-2.5 rounded-lg text-sm transition-all"
-                style={{ color: 'var(--text-secondary)' }}
-                onClick={() => setOpen(false)}
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-          <li className="pt-2 flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all"
+        <nav className="lab-container h-14 flex items-center justify-between gap-6">
+
+          {/* Logo */}
+          <button
+            onClick={() => scrollTo('landing')}
+            className="flex items-center gap-2 group flex-shrink-0"
+            aria-label="Back to top"
+          >
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold relative overflow-hidden"
               style={{
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                color: 'var(--text-secondary)',
+                background: 'linear-gradient(135deg, #8B5CF6, #EC4899)',
+                color: '#fff',
+                fontFamily: 'var(--font-mono)',
+                boxShadow: '0 0 16px rgba(139,92,246,0.5)',
               }}
             >
-              {theme === 'dark'
-                ? <><HiSun className="w-4 h-4" /> Light mode</>
-                : <><HiMoon className="w-4 h-4" /> Dark mode</>
-              }
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 60%)',
+              }} />
+              B
+            </div>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.01em',
+            }}>
+              bitanya<span style={{ color: '#8B5CF6' }}>.lab</span>
+            </span>
+          </button>
+
+          {/* Active section indicator */}
+          <div className="hidden lg:flex items-center gap-1.5" style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+            <span style={{ color: '#3D3558' }}>~/</span>
+            <motion.span key={activeSection + '-mono'} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} style={{ color: '#8B5CF6' }}>
+              {activeMono}
+            </motion.span>
+            <span style={{ color: '#3D3558' }}>·</span>
+            <motion.span key={activeSection + '-label'} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} style={{ color: '#6B6485' }}>
+              {activeLabel}
+            </motion.span>
+          </div>
+
+          {/* Right controls */}
+          <div className="flex items-center gap-2">
+            {/* ⌘K */}
+            <button
+              onClick={onOpenCommandBar}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-200"
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: 11,
+                color: '#6B6485',
+                background: 'rgba(139,92,246,0.07)',
+                border: '1px solid rgba(139,92,246,0.15)',
+              }}
+              aria-label="Open command bar (Ctrl+K)"
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(139,92,246,0.35)'
+                el.style.color = '#B7B0CC'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(139,92,246,0.15)'
+                el.style.color = '#6B6485'
+              }}
+            >
+              <span style={{ color: '#8B5CF6' }}>⌘K</span>
+              <span>navigate</span>
             </button>
-          </li>
-          <li>
+
+            {/* Theme toggle */}
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light' : 'Switch to dark'}
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200"
+              style={{
+                background: 'rgba(139,92,246,0.07)',
+                border: '1px solid rgba(139,92,246,0.15)',
+                color: '#6B6485',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.35)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.15)' }}
+            >
+              {theme === 'dark' ? <HiSun className="w-3.5 h-3.5" /> : <HiMoon className="w-3.5 h-3.5" />}
+            </button>
+
+            {/* Resume */}
             <a
               href="/resume.pdf"
               download="Bitanya_Wondimagegn_Resume.pdf"
-              className="block text-center px-3 py-2.5 rounded-lg text-sm font-semibold"
-              style={{ 
-                background: theme === 'dark' ? 'rgba(124,58,237,0.15)' : 'rgba(124,58,237,0.12)', 
-                border: theme === 'dark' ? '1px solid rgba(124,58,237,0.3)' : '1px solid rgba(124,58,237,0.5)', 
-                color: theme === 'dark' ? '#c4b5fd' : '#7c3aed' 
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                background: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.1))',
+                border: '1px solid rgba(139,92,246,0.25)',
+                color: '#A78BFA',
               }}
-              onClick={() => setOpen(false)}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.5)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.25)' }}
             >
-              Resume ↓
+              resume.pdf
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <path d="M5 1v6M2.5 4.5 5 7l2.5-2.5M1 8.5h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+
+            {/* Mobile toggle */}
+            <button
+              className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+              onClick={() => setMobileOpen(o => !o)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              <span className={`w-5 h-px transition-all duration-200 origin-center ${mobileOpen ? 'rotate-45 translate-y-[3px]' : ''}`} style={{ background: '#6B6485' }} />
+              <span className={`w-5 h-px transition-all duration-200 ${mobileOpen ? 'opacity-0' : ''}`} style={{ background: '#6B6485' }} />
+              <span className={`w-5 h-px transition-all duration-200 origin-center ${mobileOpen ? '-rotate-45 -translate-y-[3px]' : ''}`} style={{ background: '#6B6485' }} />
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden"
+              style={{
+                background: 'rgba(19,17,28,0.97)',
+                backdropFilter: 'blur(24px)',
+                borderBottom: '1px solid rgba(139,92,246,0.14)',
+              }}
+            >
+              <ul className="lab-container py-4 flex flex-col gap-1">
+                {SECTIONS.map(s => (
+                  <li key={s.id}>
+                    <button
+                      onClick={() => scrollTo(s.id)}
+                      className="w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150"
+                      style={{
+                        fontFamily: 'var(--font-mono)', fontSize: 12,
+                        color: activeSection === s.id ? '#A78BFA' : '#6B6485',
+                        background: activeSection === s.id ? 'rgba(139,92,246,0.1)' : 'transparent',
+                        border: activeSection === s.id ? '1px solid rgba(139,92,246,0.2)' : '1px solid transparent',
+                      }}
+                    >
+                      <span style={{ color: '#8B5CF6', opacity: 0.5 }}>{s.mono}</span>
+                      {s.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   )
 }

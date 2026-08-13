@@ -1,28 +1,30 @@
 import { useRef, useCallback } from 'react'
 
-export function useTilt<T extends HTMLElement = HTMLDivElement>(intensity = 12) {
+/**
+ * Applies a subtle 3-D tilt effect to an element on mouse move.
+ * Returns ref + event handlers to spread onto the target element.
+ */
+export function useTilt<T extends HTMLElement>(maxDeg = 8) {
   const ref = useRef<T>(null)
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<T>) => {
       const el = ref.current
       if (!el) return
-      const rect = el.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      const cx = rect.width / 2
-      const cy = rect.height / 2
-      const rotateX = ((y - cy) / cy) * -intensity
-      const rotateY = ((x - cx) / cx) * intensity
-      el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`
+      const { left, top, width, height } = el.getBoundingClientRect()
+      const x = (e.clientX - left) / width  - 0.5
+      const y = (e.clientY - top)  / height - 0.5
+      el.style.transform = `perspective(600px) rotateY(${x * maxDeg}deg) rotateX(${-y * maxDeg}deg) translateZ(4px)`
+      el.style.transition = 'transform 0.1s ease'
     },
-    [intensity]
+    [maxDeg],
   )
 
   const onMouseLeave = useCallback(() => {
     const el = ref.current
     if (!el) return
-    el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+    el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) translateZ(0)'
+    el.style.transition = 'transform 0.5s ease'
   }, [])
 
   return { ref, onMouseMove, onMouseLeave }
