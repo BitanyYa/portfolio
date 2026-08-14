@@ -1,6 +1,6 @@
 ﻿import { useRef, useEffect, useState, useCallback } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
-import avatarSrc from '../assets/user_avatar.png'
+import avatarSrc from '../assets/user-avatar.webp'
 
 /* ─────────────────────────────────────────────────────────────
    LandingExperience — Phase 2
